@@ -27,10 +27,11 @@ enum Refresher {
         SharedStore.saveLocation(location)
         WidgetCenter.shared.reloadAllTimelines()
 
-        if snapshot.isIdeal && !SharedStore.lastIdeal {
+        let ideal = IdealRule.isIdeal(criteria: SharedStore.criteria, values: snapshot.values)
+        if ideal && !SharedStore.lastIdeal {
             notifyIdeal()
         }
-        SharedStore.lastIdeal = snapshot.isIdeal
+        SharedStore.lastIdeal = ideal
         return snapshot
     }
 

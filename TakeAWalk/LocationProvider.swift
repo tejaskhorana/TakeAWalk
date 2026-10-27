@@ -10,6 +10,8 @@ enum LocationError: LocalizedError {
 }
 
 /// One-shot current location, requesting permission on first use.
+/// Uses continuous updates and takes the first real fix, since a one-shot request
+/// can fail with "location unknown" before the first fix arrives.
 final class LocationProvider: NSObject, CLLocationManagerDelegate {
     private let manager = CLLocationManager()
     private var pending: CheckedContinuation<CLLocation, Error>?
@@ -17,7 +19,7 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
     override init() {
         super.init()
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyKilometers
+        manager.desiredAccuracy = 1000 // meters; coarse is enough for weather
     }
 
     func currentLocation() async throws -> CLLocation {
@@ -27,7 +29,7 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
             case .notDetermined:
                 manager.requestWhenInUseAuthorization()
             case .authorizedWhenInUse, .authorizedAlways:
-                manager.requestLocation()
+                manager.startUpdatingLocation()
             default:
                 finish(.failure(LocationError.denied))
             }
@@ -37,7 +39,7 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse, .authorizedAlways:
-            if pending != nil { manager.requestLocation() }
+            if pending != nil { manager.startUpdatingLocation() }
         case .denied, .restricted:
             finish(.failure(LocationError.denied))
         default:
@@ -50,10 +52,13 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        // "Location unknown" is transient while the first fix is pending. Keep waiting.
+        if let clError = error as? CLError, clError.code == .locationUnknown { return }
         finish(.failure(error))
     }
 
     private func finish(_ result: Result<CLLocation, Error>) {
+        manager.stopUpdatingLocation()
         guard let continuation = pending else { return }
         pending = nil
         continuation.resume(with: result)

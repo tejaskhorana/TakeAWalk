@@ -8,14 +8,22 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.0"
-    DEVELOPMENT_TEAM: YOUR_TEAM_ID
+    DEVELOPMENT_TEAM: 38PPBH5U6L   # your 10-character Apple Team ID
+    CODE_SIGN_STYLE: Automatic
 targets:
   TakeAWalk:
     type: application
     platform: iOS
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     sources: [TakeAWalk, Shared]
     entitlements:
       path: TakeAWalk/TakeAWalk.entitlements
+      properties:
+        com.apple.developer.weatherkit: true
+        com.apple.security.application-groups:
+          - group.com.tejaskhorana.TakeAWalk
     dependencies:
       - target: TakeAWalkWidget
         embed: true
@@ -36,6 +44,9 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.tejaskhorana.TakeAWalk.Widget
     entitlements:
       path: TakeAWalkWidget/TakeAWalkWidget.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.tejaskhorana.TakeAWalk
     info:
       path: TakeAWalkWidget/Info.plist
       properties:
