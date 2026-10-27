@@ -2,7 +2,7 @@
 
 An iOS app (with a 1×1 home-screen widget) that answers one question: **are conditions ideal to be outside right now?**
 
-See [PRODUCT.md](PRODUCT.md) for product direction, decisions, and open questions.
+Product direction and decisions are kept locally (not in this repo).
 
 ## Setup (local only)
 

@@ -20,6 +20,11 @@ secrets.json
 **/GoogleService-Info.plist
 
 # ---------------------------------------------------------------
+# Local-only project notes (kept on this machine, never pushed)
+# ---------------------------------------------------------------
+PRODUCT.md
+
+# ---------------------------------------------------------------
 # Xcode / Swift build output and per-user state
 # ---------------------------------------------------------------
 build/
