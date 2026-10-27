@@ -1,0 +1,52 @@
+# ---------------------------------------------------------------
+# PRIVACY / SECRETS — never commit these
+# ---------------------------------------------------------------
+# WeatherKit credentials (Apple developer key, team/key IDs)
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+*.pem
+*.key
+AuthKey_*.p8
+
+# Local configuration holding keys or identifiers
+Config/Secrets.xcconfig
+Config/*.local.xcconfig
+.env
+.env.*
+!.env.example
+secrets.json
+**/GoogleService-Info.plist
+
+# ---------------------------------------------------------------
+# Xcode / Swift build output and per-user state
+# ---------------------------------------------------------------
+build/
+DerivedData/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+.build/
+.swiftpm/
+Packages/
+Pods/
+Carthage/Build/
+
+# ---------------------------------------------------------------
+# macOS / editors
+# ---------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+*.swp
+*~
+.idea/
+.vscode/
