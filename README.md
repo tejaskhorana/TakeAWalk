@@ -1,4 +1,4 @@
-# WeatherIdeal
+# TakeAWalk
 
 An iOS app (with a 1×1 home-screen widget) that answers one question: **are conditions ideal to be outside right now?**
 
